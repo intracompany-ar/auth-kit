@@ -1,6 +1,6 @@
 {
   "name": "@intracompany/auth-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Middlewares de autenticación vue frontend API tokens",
   "license": "MIT",
   "author": "IntraCompany",
@@ -32,10 +32,14 @@
   "devDependencies": {
     "typescript": "^5.8.2"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "typesVersions": {
     "*": {
-      "*": ["dist/index.d.ts"]
+      "*": [
+        "dist/index.d.ts"
+      ]
     }
   }
 }
