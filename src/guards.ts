@@ -65,7 +65,10 @@ export function createRouteGuards({
         }
         
         if (!isPublic && isAuthenticated && needsPasswordUpdate) {
-            return next(to.path !== updatePasswordPath ? updatePasswordPath : undefined);
+            if (to.path !== updatePasswordPath) {
+                return next(updatePasswordPath)
+            } 
+            return next() // continuar normalmente
         }
         
         if (isPublic && isAuthenticated) {
@@ -73,7 +76,7 @@ export function createRouteGuards({
         }
         
         var authorized = true;
-        const subsystemIndexLink = to.meta?.subsystem ?? to.path.split('/')[1]
+        const subsystemIndexLink = typeof to.meta?.subsystem === 'string' ? to.meta.subsystem : to.path.split('/')[1];
         const hasChildren = to.matched?.[0]?.children?.length > 0
 
         if(to.meta?.subsystem || hasChildren) {

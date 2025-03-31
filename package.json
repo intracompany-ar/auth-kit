@@ -16,7 +16,8 @@
   },
   "scripts": {
     "test": "test",
-    "build": "tsc"
+    "build": "tsc",
+    "release": "npm run build && npm version patch && npm publish --scope public && git push"
   },
   "peerDependencies": {
     "@intracompany/commons_front": "^1.0",
