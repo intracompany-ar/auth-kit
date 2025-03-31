@@ -1,0 +1,40 @@
+{
+  "name": "@intracompany/auth-kit",
+  "version": "1.0.0",
+  "description": "Middlewares de autenticación vue frontend API tokens",
+  "license": "MIT",
+  "author": "IntraCompany",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "test": "test",
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@intracompany/commons_front": "^1.0",
+    "axios": "^1.0",
+    "pinia": "^2.0",
+    "vue": "^3.0",
+    "vue-router": "^4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "files": ["dist"],
+  "typesVersions": {
+    "*": {
+      "*": ["dist/index.d.ts"]
+    }
+  }
+}
