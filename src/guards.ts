@@ -1,17 +1,22 @@
-import { closeModals } from '@intracompany/commons_front'
+import { useStoreAdvices, closeModals } from '@intracompany/commons_front'
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import axios from 'axios'
+import { useAuth } from './stores/auth'
+import { useBus } from './stores/bus'
+
+type AuthStore = ReturnType<typeof useAuth>
+type StoreBus = ReturnType<typeof useBus>
+type AdvicesStore = ReturnType<typeof useStoreAdvices>
 
 export interface RouteGuardOptions {
     loginPath?: string
     dashboardPath?: string
     updatePasswordPath?: string
     appName?: string
-    useAuth: () => any
-    useBus: () => any
-    useStoreAdvices: () => any
+    useAuth: () => AuthStore
+    useBus: () => StoreBus
+    useStoreAdvices: () => AdvicesStore
 }
-
 
 export function createRouteGuards({
     loginPath = '/login',
@@ -21,7 +26,7 @@ export function createRouteGuards({
     useAuth,
     useBus,
     useStoreAdvices
-}) {
+}: RouteGuardOptions) {
     
     /**
      * Obtiene la configuración del subsistema basado en el index_link.
@@ -51,8 +56,8 @@ export function createRouteGuards({
      * NO necesito validar tokens, porque si no son válidos, sanctum response 401, y axios.interceptors.response hace el logout y me redirecciona
     */
     const handleBeforeEach = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-        const storeBus = useBus();
-        const storeAuth = useAuth();
+        const storeBus = useBus()
+        const storeAuth = useAuth()
         const storeAdvices = useStoreAdvices()
 
         const isPublic = to.meta?.public

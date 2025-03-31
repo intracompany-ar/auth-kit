@@ -3,6 +3,9 @@ declare global {
         axios: typeof axios;
     }
 }
+
+import type { Pinia } from 'pinia'
+import type { Router } from 'vue-router'
 import axios from 'axios'
 import { useAuth } from './../stores/auth'
 import { useStoreAdvices, showLoaders, disableSubmits, hideLoaders, enableSubmits } from '@intracompany/commons_front'
@@ -13,18 +16,19 @@ window.axios = axios;
 const api = axios
 export default api
 
-export function setAxios(pinia, router) {
+export function setAxios(pinia: Pinia, router: Router) {
     const storeAuth = useAuth(pinia);
     const storeAdvices = useStoreAdvices(pinia);
     
     axios.interceptors.request.use(
         requestConfig => {
-            if (requestConfig.noCache) {
-                requestConfig.headers['Cache-Control'] = 'no-cache';
-            }
+            // 2503331 No se para que lo estaba usando, pero me da error Ts, así que lo saqué por ahora
+            // if (requestConfig.noCache) {
+            //     requestConfig.headers['Cache-Control'] = 'no-cache';
+            // }
 
             // Modificar la URL solo si NO es una URL completa (comienza con 'http' o 'https')
-            if (!requestConfig.url.startsWith('http')) {
+            if (requestConfig.url && !requestConfig.url.startsWith('http')) {
                 requestConfig.url = `${import.meta.env.VITE_API_URL}/${requestConfig.url}`;
             }
             
@@ -34,7 +38,7 @@ export function setAxios(pinia, router) {
             requestConfig.headers['Accept'] = 'application/json';
             requestConfig.headers['Content-Type'] = requestConfig.headers['Content-Type'] ?? 'application/json';
 
-            if (['put', 'post', 'delete'].includes(requestConfig.method)) {
+            if (requestConfig.method && ['put', 'post', 'delete'].includes(requestConfig.method)) {
                 disableSubmits();
             }
             showLoaders();

@@ -19,14 +19,12 @@ export const useAuth = defineStore('auth', () => {
         }
     })())
     const token = ref( localStorage.getItem('api-token') || null )
-    const redirectAfterLogin = ref(null)
+    const redirectAfterLogin = ref('')
 
     const isAuthenticated = computed(() => token.value !== null)
 
-
     function getUserAuth() {
         return JSON.parse(user.value);
-
     }
 
     async function login(tokenParam: string, userParam: object) {
