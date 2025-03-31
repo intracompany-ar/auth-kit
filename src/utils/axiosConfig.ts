@@ -7,7 +7,7 @@ declare global {
 import type { Pinia } from 'pinia'
 import type { Router } from 'vue-router'
 import axios from 'axios'
-import { useAuth } from './../stores/auth'
+import { useAuth } from './../stores/auth.js'
 import { useStoreAdvices, showLoaders, disableSubmits, hideLoaders, enableSubmits } from '@intracompany/commons_front'
 
 // Forma legacy, para usar axios.

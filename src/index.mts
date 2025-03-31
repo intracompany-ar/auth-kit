@@ -1,9 +1,9 @@
 import type { App } from 'vue'
 import type { Pinia } from 'pinia'
 import type { Router } from 'vue-router'
-import { setAxios } from './utils/axiosConfig'
-import installGuards from './plugin'
-import { useAuth } from './stores/auth'
+import { setAxios } from './utils/axiosConfig.js'
+import installGuards from './plugin.js'
+import { useAuth } from './stores/auth.js'
 
 interface GuardOptions {
     loginPath?: string
@@ -44,5 +44,5 @@ export default {
     }
 }
 
-export { useAuth } from './stores/auth'
-export { useBus } from './stores/bus'
+export { useAuth } from './stores/auth.js'
+export { useBus } from './stores/bus.js'

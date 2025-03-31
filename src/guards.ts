@@ -1,8 +1,8 @@
 import { useStoreAdvices, closeModals } from '@intracompany/commons_front'
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import axios from 'axios'
-import { useAuth } from './stores/auth'
-import { useBus } from './stores/bus'
+import { useAuth } from './stores/auth.js'
+import { useBus } from './stores/bus.js'
 
 type AuthStore = ReturnType<typeof useAuth>
 type StoreBus = ReturnType<typeof useBus>
