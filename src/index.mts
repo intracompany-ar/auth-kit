@@ -35,8 +35,7 @@ export default {
             installGuards(router, {
                 ...guards,
                 useAuth: () => useAuth(pinia),
-                useBus: () => app.config.globalProperties.$bus, 
-                useStoreAdvices: () => app.config.globalProperties.$advices
+                useBus: () => app.config.globalProperties.$bus
             })
         }
         // Si querés exponer cosas globales (opcional)

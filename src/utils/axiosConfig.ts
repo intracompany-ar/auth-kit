@@ -8,7 +8,7 @@ import type { Pinia } from 'pinia'
 import type { Router } from 'vue-router'
 import axios from 'axios'
 import { useAuth } from './../stores/auth.js'
-import { useStoreAdvices, showLoaders, disableSubmits, hideLoaders, enableSubmits } from '@intracompany/commons_front'
+import { showLoaders, disableSubmits, hideLoaders, enableSubmits, showAdvice } from '@intracompany/commons_front'
 
 // Forma legacy, para usar axios.
 window.axios = axios;
@@ -18,7 +18,6 @@ export default api
 
 export function setAxios(pinia: Pinia, router: Router) {
     const storeAuth = useAuth(pinia);
-    const storeAdvices = useStoreAdvices(pinia);
     
     axios.interceptors.request.use(
         requestConfig => {
@@ -58,7 +57,7 @@ export function setAxios(pinia: Pinia, router: Router) {
             enableSubmits();
 
             if (response.status === 201) {
-                storeAdvices.success(response.data.message || response.data);
+                showAdvice('success', response.data.message || response.data, 'Elemento creado');
                 // SI ELIMINADO QUIERO MOSTRAR DESDE ACÁ EL SUCCESS DE ELEMENTO ELIMINADO ASÍ LIMPIO EL CÓDIGO EN EL RESTO DE LA PÁGINA. El tema que comparte 204 con update
             }
             return response;
@@ -72,7 +71,7 @@ export function setAxios(pinia: Pinia, router: Router) {
                 const { status, data } = error.response;
                 switch (status) {
                     case 401:
-                        storeAdvices.warning('No autorizado. Sesión caducó. Recargue la página.', `Error ${status}`);
+                        showAdvice('warning', 'No autorizado. Sesión caducó. Recargue la página.', `Error ${status}`);
                         await storeAuth.logout();
                         router
                             ? router.push('/login')
@@ -80,22 +79,20 @@ export function setAxios(pinia: Pinia, router: Router) {
                          // Redirigir al login. NO uso vue-router porque acá ya se cerró sesión, no puedo usar vue-rouer en este archivoe, solo dentro de un setup de Vue
                         break;
                     case 419:
-                        storeAdvices.warning('CSRF no válido. Recargue la página.', `Error ${status}`);
+                        showAdvice('warning', 'CSRF no válido. Recargue la página.', `Error ${status}`);
                         break;
                     case 403:
-                        storeAdvices.warning('No autorizado a realizar esta acción.', `Error ${status}`);
+                        showAdvice('warning', 'No autorizado a realizar esta acción.', `Error ${status}`);
                         break;
                     case 404:
-                        console.debug(data, status)
-                        console.debug(data.message, status)
-                        storeAdvices.warning(data?.message ?? 'Elemento no encontrado', `Error ${status}`);
+                        showAdvice('warning', data?.message ?? 'Elemento no encontrado', `Error ${status}`);
                         break;
                     case 422:
                         const errors = typeof data === 'object' ? Object.values(data.errors).flat() : data;
-                        storeAdvices.warning(errors, `Datos Inválidos. Error: ${status}`);
+                        showAdvice('warning', errors, `Datos Inválidos. Error: ${status}`);
                         break;
                     default:
-                        storeAdvices.danger('Algo salió mal, por favor notifique al administrador. Gracias');
+                        showAdvice('danger', 'Algo salió mal, por favor notifique al administrador', `Error ${status}`);
                         break;
                 }
             }

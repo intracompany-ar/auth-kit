@@ -1,4 +1,4 @@
-import { useStoreAdvices, closeModals } from '@intracompany/commons_front'
+import { showAdvice, closeModals } from '@intracompany/commons_front'
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import axios from 'axios'
 import { useAuth } from './stores/auth.js'
@@ -6,7 +6,6 @@ import { useBus } from './stores/bus.js'
 
 type AuthStore = ReturnType<typeof useAuth>
 type StoreBus = ReturnType<typeof useBus>
-type AdvicesStore = ReturnType<typeof useStoreAdvices>
 
 export interface RouteGuardOptions {
     loginPath?: string
@@ -15,7 +14,6 @@ export interface RouteGuardOptions {
     appName?: string
     useAuth: () => AuthStore
     useBus: () => StoreBus
-    useStoreAdvices: () => AdvicesStore
 }
 
 export function createRouteGuards({
@@ -24,8 +22,7 @@ export function createRouteGuards({
     updatePasswordPath = '/profileUser/update-password',
     appName = 'Palarich',
     useAuth,
-    useBus,
-    useStoreAdvices
+    useBus
 }: RouteGuardOptions) {
     
     /**
@@ -58,8 +55,7 @@ export function createRouteGuards({
     const handleBeforeEach = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
         const storeBus = useBus()
         const storeAuth = useAuth()
-        const storeAdvices = useStoreAdvices()
-
+        
         const isPublic = to.meta?.public
         const isAuthenticated = storeAuth.isAuthenticated
         const needsPasswordUpdate = storeAuth.user?.actualizopassw === 0
@@ -90,7 +86,7 @@ export function createRouteGuards({
         }
     
         if(!authorized){
-            storeAdvices.warning('No tiene permisos para acceder a este subsistema');
+            showAdvice('warning', 'No tiene permisos para acceder a este subsistema');
             return next(false);
         }
         
