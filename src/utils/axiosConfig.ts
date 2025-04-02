@@ -16,7 +16,7 @@ window.axios = axios;
 const api = axios
 export default api
 
-export function setAxios(pinia: Pinia, router: Router) {
+export function setAxios(pinia: Pinia, router: Router, apiUrl?: string) {
     const storeAuth = useAuth(pinia);
     
     axios.interceptors.request.use(
@@ -28,7 +28,7 @@ export function setAxios(pinia: Pinia, router: Router) {
 
             // Modificar la URL solo si NO es una URL completa (comienza con 'http' o 'https')
             if (requestConfig.url && !requestConfig.url.startsWith('http')) {
-                requestConfig.url = `${import.meta.env.VITE_API_URL}/${requestConfig.url}`;
+                requestConfig.url = `${apiUrl}/${requestConfig.url}`;
             }
             
             if (storeAuth.token) {

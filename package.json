@@ -17,12 +17,12 @@
   "scripts": {
     "test": "test",
     "build": "tsc",
-    "release": "npm run build && npm version patch && npm publish --scope public && git push"
+    "release": "npm run build && npm version minor && npm publish --scope public && git push"
   },
   "peerDependencies": {
     "@intracompany/commons_front": "^1.0",
     "axios": "^1.0",
-    "pinia": "^2.0",
+    "pinia": "^3.0",
     "vue": "^3.0",
     "vue-router": "^4.0"
   },
