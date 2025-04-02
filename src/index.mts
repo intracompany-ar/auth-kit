@@ -16,7 +16,7 @@ interface AuthKitOptions {
     pinia: Pinia
     router: Router
     guards?: GuardOptions
-    apiUrl?: string
+    apiUrl: string
 }
 
 /**
@@ -24,13 +24,16 @@ interface AuthKitOptions {
  */
 export default {
     install(app: App, options: AuthKitOptions) {
-        const { pinia, router, guards } = options
+        const { pinia, router, guards, apiUrl } = options
 
+        if (!apiUrl) {
+            throw new Error('[auth-kit] apiUrl es requerido en AuthKit.install()')
+        }
         if (!pinia || !router) {
             throw new Error('[auth-kit] pinia es requerido en AuthKit.install()')
         }
 
-        setAxios(options.pinia, options.router, options.apiUrl)
+        setAxios(pinia, router, apiUrl)
 
         if (guards) {
             installGuards(router, {
